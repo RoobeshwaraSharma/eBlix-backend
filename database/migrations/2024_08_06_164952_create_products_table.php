@@ -14,6 +14,7 @@ public function up()
         $table->string('name');
         $table->text('description');
         $table->binary('image');
+        $table->decimal('discount', 5, 2)->nullable()->default(0);
         $table->decimal('price', 8, 2);
         $table->integer('quantity');
         $table->timestamps();

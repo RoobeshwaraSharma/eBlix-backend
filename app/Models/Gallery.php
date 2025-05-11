@@ -9,6 +9,11 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image', 'price', 'quantity'];
+    protected $fillable = ['name', 'image', 'price', 'quantity', 'discount']; // Add discount to fillable
 
+    // Method to calculate the discounted price
+    public function discountedPrice()
+    {
+        return $this->price - ($this->price * ($this->discount / 100));
+    }
 }

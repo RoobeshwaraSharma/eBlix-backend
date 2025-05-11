@@ -19,9 +19,10 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $products = Product::all(['id', 'name', 'description', 'price', 'quantity', 'image']);
+            $products = Product::all(['id', 'name', 'description', 'price', 'quantity', 'image', 'discount']);
             foreach ($products as $product) {
                 $product->image_url = url('images/' . $product->image);
+                $product->discounted_price = $product->discountedPrice(); // Add the discounted price
             }
             return response()->json(['products' => $products]);
         } catch (\Exception $e) {
@@ -30,6 +31,7 @@ class ProductController extends Controller
         }
     }
 
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -37,6 +39,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
+            'discount' => 'nullable|numeric|min:0|max:100', // Add validation for discount
             'upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -46,6 +49,7 @@ class ProductController extends Controller
             $product->description = $validatedData['description'];
             $product->price = $validatedData['price'];
             $product->quantity = $validatedData['quantity'];
+            $product->discount = $validatedData['discount'] ?? 0; // Default to 0 if not provided
 
             if ($request->hasFile('upload')) {
                 $file = $request->file('upload');
@@ -61,6 +65,7 @@ class ProductController extends Controller
             return response()->json(['error' => 'There was an error storing the product'], 500);
         }
     }
+
 
     public function show($id)
     {
@@ -81,6 +86,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
+            'discount' => 'nullable|numeric|min:0|max:100', // Add validation for discount
             'upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -90,6 +96,7 @@ class ProductController extends Controller
             $product->description = $validatedData['description'];
             $product->price = $validatedData['price'];
             $product->quantity = $validatedData['quantity'];
+            $product->discount = $validatedData['discount'] ?? 0; // Default to 0 if not provided
 
             if ($request->hasFile('upload')) {
                 if ($product->image) {

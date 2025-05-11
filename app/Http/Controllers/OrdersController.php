@@ -9,7 +9,9 @@ class OrdersController extends Controller
 {
     public function store(Request $request)
     {
+        // Validate the incoming request
         $request->validate([
+            // 'user_id' => 'required|exists:users,id',  // Ensure the user exists
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
@@ -30,6 +32,21 @@ class OrdersController extends Controller
         return response()->json($orders);
     }
 
+    public function indexreport(Request $request)
+    {
+        $query = Allorders::query();
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereBetween('created_at', [
+                $request->start_date . ' 00:00:00',
+                $request->end_date . ' 23:59:59'
+            ]);
+        }
+
+        $orders = $query->get();
+        return response()->json($orders);
+    }
+
     public function destroy($id)
     {
         $order = Allorders::find($id);
@@ -39,7 +56,6 @@ class OrdersController extends Controller
         }
 
         $order->delete();
-
         return response()->json(['message' => 'Order deleted successfully'], 200);
     }
 

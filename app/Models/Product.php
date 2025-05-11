@@ -15,5 +15,12 @@ class Product extends Model
         'price',
         'quantity',
         'image',
+        'discount', // Added discount field
     ];
+
+    // Optional: Method to calculate the discounted price
+    public function discountedPrice()
+    {
+        return $this->price - ($this->price * ($this->discount / 100));
+    }
 }
