@@ -11,9 +11,10 @@ return new class extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->binary('image'); 
+            $table->string('image');
             $table->decimal('price', 8, 2);
             $table->integer('quantity');
+            $table->decimal('discount', 5, 2)->default(0);
             $table->timestamps();
         });
     }
