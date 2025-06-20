@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Allorders extends Model
 {
-    protected $fillable = ['name',  'price', 'quantity'];
+    protected $fillable = ['name', 'price', 'quantity', 'user_id', 'status'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -47,6 +47,7 @@ Route::get('/gallery-count', [GalleryController::class, 'getGalleryCount']);
 
 //Orders
 Route::post('/orders', [OrdersController::class, 'store']);
+Route::put('/orders/{id}', [OrdersController::class, 'update']);
 Route::get('/orders', [OrdersController::class, 'index']);
 Route::get('/orders/report', [OrdersController::class, 'indexreport']);
 Route::delete('/orders/{id}', [OrdersController::class, 'destroy']);

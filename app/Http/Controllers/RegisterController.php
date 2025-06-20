@@ -22,6 +22,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -40,6 +41,7 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'user_type' => $role->id, // Set user_type to the role ID
+                'address' => $request->address,
             ]);
 
             return response()->json(['message' => 'User registered successfully'], 200);
